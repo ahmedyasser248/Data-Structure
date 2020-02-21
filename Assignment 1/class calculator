@@ -7,19 +7,16 @@ public class Calculator implements ICalculator  {
 	
 	}
 	
-	public float divide(int x,int y)throws ArithmeticException {
+	public float divide(int x,int y)throws RuntimeException {
 		if(y==0) {
-			throw new ArithmeticException("cannot divide by zero");
-		}
-    else if(y<0&&x==0) {
+			throw new RuntimeException("cannot divide by zero");
+		}else if(y<0&&x==0) {
 			return 0;
 		}
 		
-		else {	
-      return (float)x/y;    }
+		else {	return (float)x/y;}
 		
 	}
-	
 	
 	
 	
