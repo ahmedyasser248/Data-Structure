@@ -1,0 +1,46 @@
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class CalculatorTest {
+
+	@Test
+	public void testAdd() {
+		
+		Calculator test=new Calculator();//creating an object.
+		int result=test.add(5, 7);//assigning the values
+		assertEquals(12,result);//the test
+		int result2=test.add(-4, 5);
+		assertEquals(1,result2);
+		
+		
+	}
+
+	
+	
+	
+	@Test
+	public void testDivide() {
+	Calculator test=new Calculator();
+	try{
+		
+		float result1=test.divide(0, -9);
+	assertEquals(0.0,result1,0);
+	float result2=test.divide(5,2);
+	assertEquals(2.5,result2,0.1);
+	
+		float result3=test.divide(-1,0);
+		assertEquals(0,result3,0.1);//this line is not performed because an error was thrown in last call for divide method. 
+		
+			
+	}			
+	catch(ArithmeticException e){
+	System.out.println(e);
+			}
+
+
+	
+	}
+
+}
