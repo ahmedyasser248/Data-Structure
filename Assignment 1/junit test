@@ -1,46 +1,33 @@
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class CalculatorTest {
+class CalculatorTest {
 
+//I used 5 JUnit test to be able to use the assertThrows method.
+	
 	@Test
-	public void testAdd() {
-		
-		Calculator test=new Calculator();//creating an object.
-		int result=test.add(5, 7);//assigning the values
-		assertEquals(12,result);//the test
-		int result2=test.add(-4, 5);
-		assertEquals(1,result2);
+	void testAdd() {
+		Calculator X = new Calculator();//creating an instance 	
+		assertEquals(5,X.add(2, 3));
+		assertEquals(2,X.add(-1, 3));
 		
 		
 	}
 
-	
-	
-	
 	@Test
-	public void testDivide() {
-	Calculator test=new Calculator();
-	try{
+	void testDivide() {
+	Calculator Z = new Calculator();//creating an instance 
+	assertEquals(2.5,Z.divide(5, 2));
+	assertEquals(5,Z.divide(10, 2));
+	assertEquals(0.333,Z.divide(1, 3),0.1);//the third parameter is a positive delta 
+	assertEquals(0.0,Z.divide(0, -1));
+	//Testing if the exception is being thrown or not .
+	assertThrows(RuntimeException.class,()->Z.divide(2, 0));
 		
-		float result1=test.divide(0, -9);
-	assertEquals(0.0,result1,0);
-	float result2=test.divide(5,2);
-	assertEquals(2.5,result2,0.1);
-	
-		float result3=test.divide(-1,0);
-		assertEquals(0,result3,0.1);//this line is not performed because an error was thrown in last call for divide method. 
 		
-			
-	}			
-	catch(ArithmeticException e){
-	System.out.println(e);
-			}
-
-
-	
+		
 	}
 
 }
