@@ -1,0 +1,154 @@
+package eg.edu.alexu.csd.datastructure.hangman.cs16;
+import java.io.*;
+import java.util.*;
+public class HangMan implements IHangman {
+
+	private int guesses;
+	private Dictionary<Integer,String> dictionary=new Hashtable<Integer,String>();//used it instead of array to not be limitied by a size ;
+	private String randomWord;
+	private String displayWord;
+	
+	
+	public  String[] readFile(String fileName)throws FileNotFoundException ,IOException{
+		//filename="dictionary.txt"
+	FileReader	fileReader1=new FileReader(fileName);//used two reader one to count number of lines to intialize the local array words
+	//the second one to remain at beginnning of the file to read from it and store in local array that will be returned to setDictionary method.
+	FileReader fileReader2=new FileReader(fileName);
+		//wrapping the fileReader with bufferreader to use readline() and to make program more efficient.
+		BufferedReader bufferReader1=new BufferedReader(fileReader1);
+		BufferedReader bufferReader2=new BufferedReader(fileReader2);
+	int i = 0;
+	String[] words;
+	String line;
+	do {
+		line=bufferReader1.readLine();
+		i++;
+		
+	}while(line!=null);
+	System.out.println(i);
+	words=new String[i];
+	int j=0;
+	do {	
+		line=bufferReader2.readLine();
+		words[j]=line;
+		j++;
+		
+	}while(line!=null);
+	bufferReader1.close();
+	bufferReader2.close();
+	return words;	
+	}
+	
+	
+	public void setDictionary(String[] words) {
+		// setting the dictionary.
+	
+		for(int i=0;i<words.length&&words[i]!=null;i++) {
+			dictionary.put(i, words[i]);
+			}
+	}
+	
+	public String selectRandomSecretWord() {
+		Random random=new Random();//making an instance from random class.
+		int randomNumber;
+		int size=dictionary.size();
+		do {randomNumber=random.nextInt(size);}while(randomNumber<0);//limiting the upper bound of random number that choose the word from dictionary.
+		int index=randomNumber;
+		randomWord=dictionary.get(index).trim().toLowerCase();//removing space before and after the word and and make it lowercase .
+		int i=0;
+		displayWord="";
+		while(i<randomWord.length()) {
+			if(randomWord.charAt(i)==' ') {
+				displayWord+=' ';
+			}else {
+			
+			displayWord=displayWord+"_";}
+		i++;
+		}
+		return dictionary.get(index);
+		
+	}
+	
+	public String guess(char c) throws Exception{
+		
+	
+		if((int)c ==0 || Character.isLetter(c)==false || c == ' ') {
+			return null;	}
+		//check if it is a buggy word
+		//to make it case insensitive
+	   boolean buggy=false;int countForSpaces=0;
+		for(int i=0;i<randomWord.length();i++){
+			char s=randomWord.charAt(i);
+			if(Character.isLetter(s)|| s==' ') {
+				if(s==' ') {countForSpaces++;//to handle corner case that a file contain an string of spaces
+				}
+				buggy=false;
+			}
+			else {
+				
+				buggy=true;
+				break;			
+			}
+			
+		}	
+			
+		if(buggy==true||countForSpaces==randomWord.length()) {
+			
+			throw new Exception("buggy word is selected from the file .");
+		}
+		//if it is not buggy
+		else {c=Character.toLowerCase(c);
+		
+			boolean found =false;
+			
+			char []temp1 =randomWord.toCharArray();
+			char []temp2=displayWord.toCharArray();
+			for(int j=0;j<temp1.length;j++) {
+				if(c==temp1[j]) {
+					found=true;
+					temp2[j]=c;
+				}
+			}	
+			randomWord="";
+			for(int n=0;n<temp1.length;n++) {
+				randomWord=randomWord+temp1[n];
+			}
+			
+				displayWord="";
+				for(int i=0;i<temp2.length;i++) {
+					displayWord=displayWord+temp2[i];
+				}
+				
+			if((displayWord.compareTo(randomWord))==0) {
+					return null;		}
+			
+			if(found==false) {guesses--; }
+			
+			
+			if(guesses<=0) {
+				return null;
+			}
+				
+		
+			
+			return displayWord;
+		
+		}
+	
+		}
+	
+
+public void setMaxWrongGuesses(int max) {
+	if(max == 0) {guesses=1;}
+	else {
+	this.guesses=max;}
+}
+
+
+
+
+
+
+
+
+}
