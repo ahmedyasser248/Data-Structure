@@ -1,0 +1,77 @@
+package eg.edu.alexu.csd.datastructure.hangman.cs16;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import java.util.*;
+class HangMantest {
+
+	@Test
+	void testsetDictionary() {
+		HangMan obj = new HangMan();
+		//tetsing exceptions due to reading an openin files.
+	try{obj.setDictionary(obj.readFile("fsgsfgarafs.txt"));
+	fail("it failed to throw exception");
+	
+	}
+	catch(Exception e) {System.out.println(e);}
+	
+	
+	}
+		@Test
+	void testSelectRandomWordAndWin()  {
+		
+	try {	HangMan obj = new HangMan();
+	obj.setDictionary(obj.readFile("dictionary.txt"));
+	Random random=new Random();
+		String randomWord=obj.selectRandomSecretWord();
+		obj.setMaxWrongGuesses(3);
+		char randomCharacter;
+		String test="aa";
+		do {
+		randomCharacter=(char)(97+random.nextInt(26));//26 is exclusive
+			if(randomWord.indexOf(randomCharacter)>=0) {
+				
+			test=obj.guess(randomCharacter);
+				
+			}
+			
+		}while(test!=null);
+		//if the word is guessed right then guess function return null.
+		assertNull(obj.guess(randomCharacter));
+	}catch(Exception e) {System.out.println(e);}
+
+
+
+}
+			@Test
+		void testGuessAndLose() {
+			try {HangMan obj = new HangMan();
+			obj.setDictionary(obj.readFile("dictionary.txt"));
+			Random random=new Random();
+			String randomWord=obj.selectRandomSecretWord();
+			obj.setMaxWrongGuesses(3);
+			char randomCharacter;
+			int i=0;
+			do {
+			randomCharacter=(char)(97+random.nextInt(26));//26 is exclusive
+				if(randomWord.indexOf(randomCharacter)<0) {
+					
+				obj.guess(randomCharacter);
+					i++;
+				}
+				
+			}while(i!=3);
+			//guess function should return null if the player reached maximum number of guesses;
+			assertNull(obj.guess(randomCharacter));
+			
+			
+			}catch(Exception e) {System.out.println();}	
+				
+				
+				
+				
+				
+			}
+
+}
