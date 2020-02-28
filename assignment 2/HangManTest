@@ -22,7 +22,7 @@ class HangMantest {
 	void testSelectRandomWordAndWin()  {
 		
 	try {	HangMan obj = new HangMan();
-	obj.setDictionary(obj.readFile("dictionary.txt"));
+	obj.setDictionary(obj.readFile("dictionary.txt"));//name of file i used .
 	Random random=new Random();
 		String randomWord=obj.selectRandomSecretWord();
 		obj.setMaxWrongGuesses(3);
