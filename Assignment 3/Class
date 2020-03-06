@@ -1,3 +1,4 @@
+
 package eg.edu.alexu.csd.datastructure.iceHockey.cs16;
 
 import java.awt.Point;
@@ -12,7 +13,7 @@ public class PlayersFinder implements IPlayersFinder {
   private static int numOfSquares;
   // array2 is used to not check of checked squares again while searching for colors of players.
 
-
+  /** this method is used to find the area of chain if squares to compare it with the threshold .*/
   public static void check(int i,int j,char team) {
     numOfSquares = numOfSquares + 4;
     array2[i][j] = 1;
@@ -47,7 +48,7 @@ public class PlayersFinder implements IPlayersFinder {
     return;
   }
 
-
+  /**this is the method that takes photo and return centers of players.*/
   public java.awt.Point[] findPlayers(String[] photo, int team, int threshold) {
     if (photo == null) {
       return null;
