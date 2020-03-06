@@ -1,0 +1,51 @@
+package eg.edu.alexu.csd.datastructure.iceHockey.cs16;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import java.awt.*;
+import java.util.Arrays;
+
+class PlayersFinderTest {
+	@Test
+	void testNullImage() {
+		String [] photo=null;
+		PlayersFinder test=new PlayersFinder();
+		assertNull( test.findPlayers(photo, 10, 20));
+		
+		
+		
+	}
+	
+	
+	
+	@Test
+	void testEmptyImage() {
+	
+	String []photo= {};
+	PlayersFinder test=new PlayersFinder();
+	assertNull(test.findPlayers(photo, 20, 5));
+	}
+	
+	
+	
+	@Test
+	void testTheFunction() {
+		//the example in the assignment report.
+		PlayersFinder test=new PlayersFinder();
+		Point []test2= {new Point(4,5) ,new Point(13,9) ,new Point(14,2)} ;
+		String []photo= {"33JUBU33",
+				"3U3O4433",
+				"O33P44NB",
+				"PO3NSDP3",
+				"VNDSD333",
+				"OINFD33X"
+				} ;
+		
+		test.findPlayers(photo, 3, 16) ;
+		assertArrayEquals(test2,test.findPlayers(photo, 3, 16) );
+		
+		
+	}
+	
+}
