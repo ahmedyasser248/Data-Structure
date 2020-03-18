@@ -1,10 +1,14 @@
+
 package eg.edu.alexu.csd.datastructure.linkedList.cs16_csyy;
 import java.util.*;
 import java.util.regex.Pattern;
 
 import eg.edu.alexu.csd.datastructure.linkedList.cs16_csyy.DLinkedList.Node;
 public class PolynomialSolver implements IPolynomialSolver {
-	char A,B,C,R ;
+	char A='A';
+	char B='B';
+	char C='C';
+	char R='R';
 	public HashMap<Character, Node> polynomials=new HashMap<>();
 	public class term {
 	    int coeff;
@@ -58,6 +62,8 @@ public class PolynomialSolver implements IPolynomialSolver {
 				count2++;
 			}
 		}		
+		PolynomialSolver test=new PolynomialSolver();
+		test.sort2dArray(array);
 		return array;
 	}
 
@@ -136,55 +142,51 @@ public class PolynomialSolver implements IPolynomialSolver {
 		term currentTerm1=(term)temp1.element;
 		term currentTerm2=(term)temp2.element;
 		while(temp2 != null && temp1 != null) {
+		    currentTerm1=(term)temp1.element;
+	         currentTerm2=(term)temp2.element; 
+	         System.out.println(currentTerm1.exp);
+	         System.out.println(currentTerm2.exp);
 		if(currentTerm1.exp==currentTerm2.exp) {
 			int sumOfCoeff=currentTerm1.coeff+currentTerm2.coeff;
 			int sumOfExp=currentTerm1.exp;
 			term termResult=new term(sumOfCoeff,sumOfExp);
 			Result.add(termResult);
 	         temp1=temp1.next;
-	         temp2=temp2.next;
-	         currentTerm1=(term)temp1.element;
-	         currentTerm2=(term)temp2.element; 
-		}else if(currentTerm1.exp<currentTerm2.exp) {
-			term termResult=new term(currentTerm1.coeff,currentTerm1.exp);
-			Result.add(termResult);
-			currentTerm1=(term)temp1.next.element;//only one will be change the greater will remain in it's place
-			 temp1=temp1.next;
-		}else {
+	         temp2=temp2.next; 
+		}else if(currentTerm2.exp>currentTerm1.exp) {
 			term termResult=new term(currentTerm2.coeff,currentTerm2.exp);
 			Result.add(termResult);
 			 temp2=temp2.next;
-			 currentTerm2=(term)temp2.element;
+		}else if(currentTerm1.exp>currentTerm2.exp) {
+			term termResult=new term(currentTerm1.coeff,currentTerm1.exp);
+			Result.add(termResult);
+			 temp1=temp1.next;
 	         }	
 			}//one of them is finished so let's check
 		while(temp2!=null) {
+			currentTerm2=(term)temp2.element;
 			term termResult=new term(currentTerm2.coeff,currentTerm2.exp);
 			Result.add(termResult);
 			temp2=temp2.next;
-			currentTerm2=(term)temp2.element;
+			
 		}
 		while(temp1 != null) {
+			currentTerm1=(term)temp1.element;
 			term termResult=new term(currentTerm1.coeff,currentTerm1.exp);
 			Result.add(termResult);
 			temp1=temp1.next;
-			currentTerm1=(term)temp1.element;
 		}
 		polynomials.put(R, Result.head);//set it in the hashtable.
 		//now we transfer data in linkedlist result to 2d array.
 		int [][] sumArray=new int[Result.size][2];
 		Node temp3=Result.head;
 		term currentTerm=(term)temp3.element;
-		for(int i=0;i<Result.size;i++) {
+		for(int i=0;i<Result.size&&temp3!=null;i++) {
+			currentTerm=(term)temp3.element;
 			sumArray[i][0]=currentTerm.coeff;
 			sumArray[i][1]=currentTerm.exp;
 			temp3=temp3.next;
-			currentTerm=(term)temp3.element;
-					
-			
 		}
-		
-		
-		
 		return sumArray;
 	}
 
@@ -202,18 +204,18 @@ public class PolynomialSolver implements IPolynomialSolver {
 	public static void main(String[] args) {
 	
 		PolynomialSolver test=new PolynomialSolver();
-		String ahmed ="(2,4),(4,9),(7,8)";
+		String ahmed ="(2,5),(4,9),(7,8)";
 		int[][] ahmed1=test.change(ahmed);
-		test.sort2dArray(ahmed1);
-		test.setPolynomial('A', ahmed1);
+		test.setPolynomial(test.A, ahmed1);
 		String mona="(3,5),(2,3),(5,6)";
 		int[][]mona1=test.change(mona);
-		test.sort2dArray(mona1);
-		test.setPolynomial('B', mona1);
-		
-		int[][] ahmed3=test.add('A','B');
-		
-		
+		test.setPolynomial(test.B, mona1);
+		test.print(test.A);
+		test.print(test.B);
+		int [][]sumArray= test.add(test.A, test.B);
+		test.print(test.R);
+				
+			
 		
 		
 		
