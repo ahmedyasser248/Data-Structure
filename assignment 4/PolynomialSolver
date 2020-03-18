@@ -2,13 +2,10 @@ package eg.edu.alexu.csd.datastructure.linkedList.cs16_csyy;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import eg.edu.alexu.csd.datastructure.linkedList.cs16_csyy.DLinkedList.*;
+import eg.edu.alexu.csd.datastructure.linkedList.cs16_csyy.DLinkedList.Node;
 public class PolynomialSolver implements IPolynomialSolver {
-	char A,B,C ;
-	Node head1;
-	HashMap<Character,Node> myMap=new HashMap<Character,Node>();
-	
-	
+	char A,B,C,R ;
+	public HashMap<Character, Node> polynomials=new HashMap<>();
 	public class term {
 	    int coeff;
 	    int exp;
@@ -24,11 +21,10 @@ public class PolynomialSolver implements IPolynomialSolver {
 	   } 
 	   
 	  }
-	
-	void sort2dArray(int[][] terms) {
+	 void sort2dArray(int[][] terms) {
 		int temp1;int temp2;
-		for(int i=0;i<terms[0].length;i++) {
-			for(int j=i;j<terms[0].length;j++) {
+		for(int i=0;i<terms.length;i++) {
+			for(int j=i;j<terms.length;j++) {
 				if(terms[i][1]<terms[j][1]) {
 					temp1=terms[i][1];
 					temp2=terms[i][0];
@@ -43,7 +39,7 @@ public class PolynomialSolver implements IPolynomialSolver {
 		
 	}
 	
-	public static int [][]   change(String input) {
+	public  int [][]   change(String input) {
 		int count1=0;int count2=0;int rows=0;
 		String [] help=input.split("[\\ |\\(|\\)|\\,]");
 		for(int i = 0; i<help.length;i++) {
@@ -68,14 +64,49 @@ public class PolynomialSolver implements IPolynomialSolver {
 	
 	@Override
 	public void setPolynomial(char poly, int[][] terms) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stubDLinkedList newLL = new DLinkedList(); // new DLinkedList to store the polynomial expression
+		DLinkedList newLL = new DLinkedList();
+
+	    for (int[] term : terms) { //loop to go over the "terms" array and store it in a "term" object
+	      term termTemp = new term();
+	      termTemp.coeff = term[0];
+	      termTemp.exp = term[1];
+	      newLL.add(termTemp);
+	    }
+
+	    polynomials.put(poly,newLL.head);
 		
 	}
 
 	@Override
 	public String print(char poly) {
 		// TODO Auto-generated method stub
-		return null;
+		 Node temp = polynomials.get(poly);
+		    String expression;
+		    term currentTerm = (term) temp.element;
+		    if(currentTerm.coeff==1)
+		      expression = "x^"  + currentTerm.exp;
+		    else
+		      expression = currentTerm.coeff + "x^"  + currentTerm.exp;
+		    temp = temp.next;
+		    while (temp != null){
+		      currentTerm = (term) temp.element;
+		      if (currentTerm.coeff<0){
+		        expression += currentTerm.coeff + "x^"  + currentTerm.exp  ;
+		      }
+		      else if(currentTerm.coeff==1){
+		        expression += "+" +  "x^"  + currentTerm.exp;
+		      }
+		      else {
+		        expression += "+" + currentTerm.coeff + "x^"  + currentTerm.exp;
+		      }
+		      temp = temp.next;
+		    }
+		    System.out.println(expression);
+		    return expression;
+		
+		
+		
 	}
 
 	@Override
@@ -86,14 +117,75 @@ public class PolynomialSolver implements IPolynomialSolver {
 
 	@Override
 	public float evaluatePolynomial(char poly, float value) {
-		// TODO Auto-generated method stub
-		return 0;
+		double result = 0;
+	    Node temp = polynomials.get(poly);
+	    term currentTerm;
+	    while (temp != null){
+	      currentTerm = (term) temp.element;
+	      result += currentTerm.coeff * Math.pow(value,currentTerm.exp) ;
+	      temp = temp.next;
+	    }
+	    return (float) result;		
 	}
 
 	@Override
 	public int[][] add(char poly1, char poly2) {
-		// TODO Auto-generated method stub
-		return null;
+		Node temp1=polynomials.get(poly1);//head of first linked list,will be used to traverse the linkedlist.
+		Node temp2=polynomials.get(poly2);//head of second linked list.
+		DLinkedList Result=new DLinkedList();
+		term currentTerm1=(term)temp1.element;
+		term currentTerm2=(term)temp2.element;
+		while(temp2 != null && temp1 != null) {
+		if(currentTerm1.exp==currentTerm2.exp) {
+			int sumOfCoeff=currentTerm1.coeff+currentTerm2.coeff;
+			int sumOfExp=currentTerm1.exp;
+			term termResult=new term(sumOfCoeff,sumOfExp);
+			Result.add(termResult);
+	         temp1=temp1.next;
+	         temp2=temp2.next;
+	         currentTerm1=(term)temp1.element;
+	         currentTerm2=(term)temp2.element; 
+		}else if(currentTerm1.exp<currentTerm2.exp) {
+			term termResult=new term(currentTerm1.coeff,currentTerm1.exp);
+			Result.add(termResult);
+			currentTerm1=(term)temp1.next.element;//only one will be change the greater will remain in it's place
+			 temp1=temp1.next;
+		}else {
+			term termResult=new term(currentTerm2.coeff,currentTerm2.exp);
+			Result.add(termResult);
+			 temp2=temp2.next;
+			 currentTerm2=(term)temp2.element;
+	         }	
+			}//one of them is finished so let's check
+		while(temp2!=null) {
+			term termResult=new term(currentTerm2.coeff,currentTerm2.exp);
+			Result.add(termResult);
+			temp2=temp2.next;
+			currentTerm2=(term)temp2.element;
+		}
+		while(temp1 != null) {
+			term termResult=new term(currentTerm1.coeff,currentTerm1.exp);
+			Result.add(termResult);
+			temp1=temp1.next;
+			currentTerm1=(term)temp1.element;
+		}
+		polynomials.put(R, Result.head);//set it in the hashtable.
+		//now we transfer data in linkedlist result to 2d array.
+		int [][] sumArray=new int[Result.size][2];
+		Node temp3=Result.head;
+		term currentTerm=(term)temp3.element;
+		for(int i=0;i<Result.size;i++) {
+			sumArray[i][0]=currentTerm.coeff;
+			sumArray[i][1]=currentTerm.exp;
+			temp3=temp3.next;
+			currentTerm=(term)temp3.element;
+					
+			
+		}
+		
+		
+		
+		return sumArray;
 	}
 
 	@Override
@@ -107,6 +199,26 @@ public class PolynomialSolver implements IPolynomialSolver {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public static void main(String[] args) {
 	
+		PolynomialSolver test=new PolynomialSolver();
+		String ahmed ="(2,4),(4,9),(7,8)";
+		int[][] ahmed1=test.change(ahmed);
+		test.sort2dArray(ahmed1);
+		test.setPolynomial('A', ahmed1);
+		String mona="(3,5),(2,3),(5,6)";
+		int[][]mona1=test.change(mona);
+		test.sort2dArray(mona1);
+		test.setPolynomial('B', mona1);
+		
+		int[][] ahmed3=test.add('A','B');
+		
+		
+		
+		
+		
+		
+		
+	}
 
 }
