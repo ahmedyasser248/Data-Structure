@@ -1,0 +1,112 @@
+package eg.edu.alexu.csd.datastructure.linkedList.cs16_csyy;
+import java.util.*;
+import java.util.regex.Pattern;
+
+import eg.edu.alexu.csd.datastructure.linkedList.cs16_csyy.DLinkedList.*;
+public class PolynomialSolver implements IPolynomialSolver {
+	char A,B,C ;
+	Node head1;
+	HashMap<Character,Node> myMap=new HashMap<Character,Node>();
+	
+	
+	public class term {
+	    int coeff;
+	    int exp;
+	    
+	   term(){
+		   this.coeff=0;
+		   this.exp=0;
+		   
+	   } 
+	   term(int coeff,int exp){
+		   this.coeff=coeff;
+		   this.exp=exp;
+	   } 
+	   
+	  }
+	
+	void sort2dArray(int[][] terms) {
+		int temp1;int temp2;
+		for(int i=0;i<terms[0].length;i++) {
+			for(int j=i;j<terms[0].length;j++) {
+				if(terms[i][1]<terms[j][1]) {
+					temp1=terms[i][1];
+					temp2=terms[i][0];
+					terms[i][1]=terms[j][1];
+					terms[i][0]=terms[j][0];
+					terms[j][1]=temp1;
+					terms[j][0]=temp2;
+				}
+				
+			}
+		}
+		
+	}
+	
+	public static int [][]   change(String input) {
+		int count1=0;int count2=0;int rows=0;
+		String [] help=input.split("[\\ |\\(|\\)|\\,]");
+		for(int i = 0; i<help.length;i++) {
+			if(Pattern.matches("[-?0-9]+",help[i])) {
+			count1++;}
+			}
+		int [][] array=new int[count1/2][2];
+		for(int i = 0; i<help.length;i++) {
+			if(Pattern.matches("[-?0-9]+",help[i]) && count2 % 2 == 0) {
+				array[rows][0]=Integer.parseInt(help[i]);
+				count2++;
+			}
+			else if(Pattern.matches("[-?0-9]+",help[i])&& count2 % 2 == 1) {
+				array[rows][1]=Integer.parseInt(help[i]);
+				rows++;
+				count2++;
+			}
+		}		
+		return array;
+	}
+
+	
+	@Override
+	public void setPolynomial(char poly, int[][] terms) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String print(char poly) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void clearPolynomial(char poly) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public float evaluatePolynomial(char poly, float value) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int[][] add(char poly1, char poly2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int[][] subtract(char poly1, char poly2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int[][] multiply(char poly1, char poly2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+}
