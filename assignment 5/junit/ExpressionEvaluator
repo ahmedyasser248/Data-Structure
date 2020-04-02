@@ -1,0 +1,54 @@
+package eg.edu.alexu.csd.datastructure.stack.cs16;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class ExpressionEvaluatorTest {
+
+	@Test
+	void Test() {
+		ExpressionEvaluator test=new ExpressionEvaluator();
+		//first test symbolic expression
+		assertEquals("a b c + * f /",test.infixToPostfix("a*(b+c)/f"));
+		assertEquals("ax ab + fc * sf /",test.infixToPostfix("(ax+ab)*fc/sf"));
+		
+		//no assumption on spaces
+		assertEquals("a b c + * f /",test.infixToPostfix("a * ( b + c ) / f "));
+		
+		//evaluate method throw an exception if exception contain symbols.
+		assertThrows(RuntimeException.class,()->{test.evaluate(test.infixToPostfix("2*(3+c)/5"));});
+		
+		//Testing the  numeric expressions
+		assertEquals("10 2 3 * + 6 -",test.infixToPostfix("10+(2*3)-6"));
+		assertEquals(10,test.evaluate(test.infixToPostfix("10+(2*3)-6")));
+		
+		//using dummy zero to represent negative numbers.
+		assertEquals("0 10 - 2 3 * + 0 6 - +",test.infixToPostfix("-10+(2*3)+-6"));
+		assertEquals(-10,test.evaluate(test.infixToPostfix("-10+(2*3)+-6")));
+		assertEquals("2 0 3 - 4 / + 6 -",test.infixToPostfix("2+(-3/4)-6"));
+		assertEquals(-4,test.evaluate(test.infixToPostfix("2+(-3/4)-6")));
+		//cases that causes exceptions
+		//1-empty String(full of spaces and null)
+		assertThrows(RuntimeException.class,()->{test.infixToPostfix(null);});
+		assertThrows(RuntimeException.class,()->{test.infixToPostfix("");});
+	    assertThrows(RuntimeException.class,()->{test.infixToPostfix("       ");});
+		
+	    //2-number of operators is not acceptable with operands 
+	    assertThrows(RuntimeException.class,()->{test.infixToPostfix("2+*3/4-6");});
+	    
+	    //3-number of opened parentheses is different from closed ones or vice versa
+	    assertThrows(RuntimeException.class,()->{test.infixToPostfix("2 + ((3/4)-6");});
+	    assertThrows(RuntimeException.class,()->{test.infixToPostfix("2 + (3/4)-6)");});
+	    //4-expression has a term divided by zero
+	    assertThrows(RuntimeException.class,()->{test.evaluate(test.infixToPostfix("2*3/0+7"));});
+	    
+	    //special cases(1 positive term or just one negative term)
+	    assertEquals("123",test.infixToPostfix("123"));
+	    assertEquals("0 123 -",test.infixToPostfix("-123"));
+	    
+	    
+	    
+	}
+
+}
