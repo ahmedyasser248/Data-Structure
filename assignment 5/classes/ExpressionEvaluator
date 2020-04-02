@@ -1,0 +1,233 @@
+package eg.edu.alexu.csd.datastructure.stack.cs16;
+
+import java.util.Scanner;
+import java.util.regex.Pattern;
+/**
+ * @author Ahmed Yasser
+ * Class to change postfix to infix and evaluate.
+ * */
+public class ExpressionEvaluator implements IExpressionEvaluator{
+
+	/**
+	 * <p>
+	 * This method is used to return precedence of each operator. 
+	 * </p>
+	 * @param A is the operator from string.
+	 * @return the precedence of that operator.
+	 */
+		public static int precedence(char A) {
+			switch (A) {
+			case '+':
+				return 1;
+			case '-':
+				return 1;
+			case '*':
+				return 2;
+			case '/':
+				return 2;
+			default:
+				return 0;
+			}	
+		}
+		
+		
+		/**
+		 * <p>
+		 * this method change infix expression to postfix one .
+		 * </p>
+		 * @param expression It is the input from the user into infix form
+		 * @return A string after it is converted from infix to postfix form
+		 * @throws an exceptions if String is empty or contain spaces only(one space between each term and operator)
+		 * @throws an exception if number of parentheses is right(opened are more than closed or vice versa)  
+		 */
+		@Override
+		public String infixToPostfix(String expression) {
+			String output = "";
+			String operator="";
+			Stack test = new Stack();
+			if (expression == null) {
+				throw new RuntimeException("the String is not intiallized");
+			}
+			expression = expression.trim();
+			/*will split expression and remove all spaces
+			and return an array of strings without spaces*/
+			String[]array = expression.split("\\s+");
+			if(expression.length() == 0) {
+				throw new RuntimeException("please enter a valid input(string is empty)");
+			}
+			/*
+			 * creating a string without spaces (no space assumptions in assignment PDF).
+			 * */
+			String expression2 = "";
+			for (int i = 0; i < array.length; i++) {
+				expression2 = expression2 + array[i];
+			}
+			System.out.println(expression2);
+			for (int i = 0; i < expression2.length(); i++) {
+				char  input = expression2.charAt(i);
+				if (input == '(') {
+					test.push(input);
+					continue;
+				}
+				else if ( input == '+' || input == '-' || input == '*' || input == '/'){
+					/*
+					 * check if i have a -ve number in a string .
+					 * */
+					
+					if(i-1>=0) {
+					 operator=String.valueOf(expression2.charAt(i-1));
+					}
+					if ((input == '-' && i-1 < 0 )||(input == '-' &&Pattern.matches("[\\*\\+-/\\(]",operator )) ) {
+						i++;
+						if(i + 1 <= expression2.length()) {
+							String operand="";
+							String testx=String.valueOf(expression2.charAt(i));
+							while(!Pattern.matches("[\\*\\+-/\\)\\(]",testx)) {
+								operand=operand+expression2.charAt(i);
+								i++;
+								if(i<expression2.length()) {
+									testx=String.valueOf(expression.charAt(i));
+								}else {
+									break;
+								}
+							
+							}
+							output=output+"0"+" "+operand+" "+"-";
+						}
+						i--;//it will increase by for loop increment.
+						continue;
+					}
+					if (test.isEmpty() || precedence((char) test.peek()) < precedence(input)) {
+						test.push(input);
+						output = output + " ";
+						continue;
+					}
+					else {
+						char temp=	(char)test.pop();
+						output=output+" "+temp;
+						i--;
+						continue;
+					}
+				}
+				else if(input==')') {
+					
+					while(!test.isEmpty()&& (char)test.peek()!='(') {
+						char temp = (char) test.pop();
+						output = output + " " + temp;
+					}
+					/*
+					 * check if number of opened paranthesis is not equal to closed ones.
+					 * */
+					if(test.isEmpty()) {
+						throw new RuntimeException("there is a problem in number of paranthesis used");																	
+					}else {
+						test.pop();
+					}
+				}else {
+					output = output + input;
+				}
+			}
+			while (!test.isEmpty()) {
+				char temp = (char) test.pop();
+				if (temp == '(') {
+					throw new RuntimeException("number of parentheses used is wrong");
+				}
+				output = output + " " + temp;
+			}
+			/*
+			 * splitting it again to an array to find if number of operators is accepted
+			 * with number of operands or not.
+			 * creating an array of strings and I split with spaces.
+			 * */
+			String []array2 = output.split("\\s+");	
+			/*
+			 * Regex expression used can work with symbolic and numeric expressions.
+			 * it also works if there is other symbols rather than alphabets and numbers.
+			 * */
+			System.out.println(output);
+			int counter1 = 0;
+			int counter2 = 0;
+			for (int i = 0; i < array2.length; i++) {
+				if (Pattern.matches("[0-9a-zA-z]+", array2[i])) {
+					counter1++;
+				} else {
+					counter2++;	
+				}
+			}									
+			
+					if(counter2!=counter1-1&&counter2!=0) {
+				throw new RuntimeException("number of operators is not acceptable with number of operands ");
+			}
+			System.out.println(output);	
+			return output;
+		}
+			/**
+			 * <p>
+			 * This method evaluates the values of postfix expression
+			 * </p>
+			 * @param a string in postfix formula and may contain symbols sothe user will bes asked to replace them by a numeric expressions
+			 * @return return an integer which represent value of expression.
+			 * @throws IllegalStateException if the expression contain symbols.
+			 * */
+		@Override
+	  public int evaluate(String expression) {
+			String[] array = expression.split("\\s");
+			for(int i = 0; i < array.length; i++) {
+				if(Pattern.matches("[^\\*\\+-/0-9]+", array[i])) {
+					throw new RuntimeException("cannot evaluate symbols");
+				}
+			}
+			float result1 = Float.parseFloat(array[0]);
+			Stack stack =new Stack();
+			for (int i = 0; i < array.length; i++) {
+				if (array[i] == " ") {
+					continue;
+				} 
+				else {
+					if(array[i].equals("+") || array[i].equals("-") || array[i].equals("/") || array[i].equals("*")) {
+						String Soperand2 = (String) stack.pop();
+						float operand2 = Float.parseFloat(Soperand2);
+						String Soperand1 = (String) stack.pop();
+						float operand1 = Float.parseFloat(Soperand1);
+						
+						switch(array[i]) {
+						case "+":
+							result1 = operand1 + operand2;
+							 break;
+						case"-":
+							result1 = operand1 - operand2;
+							break;
+						case"*":
+							result1 = operand1 * operand2;
+							break;
+						case"/":
+							if(operand2<=0.00001 && operand2>=0) {
+								throw new RuntimeException("cannot divide by zero");
+							}
+							result1 = operand1 / operand2;
+							break;
+						default:
+							break;
+						}
+						String sresult1 = result1 + "";
+						System.out.println(sresult1);
+						stack.push(sresult1);
+					} 
+					else {
+						stack.push(array[i]);
+					}
+				}
+			}
+			
+			return (int) result1;
+	  }
+		public static void main(String[] args) {
+			ExpressionEvaluator mona = new ExpressionEvaluator();
+			String ahmed = "2 + (-3/4)-6";
+			String test = mona.infixToPostfix(ahmed);
+			System.out.println(test);
+			System.out.println(mona.evaluate(test));
+		}
+
+	
+}
