@@ -1,0 +1,29 @@
+package eg.edu.alexu.csd.datastructure.stack.cs16;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class JunitForStack {
+
+	@Test
+	void TestTheStack() {
+		Stack test= new Stack();
+		test.push(3);//1st
+		test.push(4);//2nd
+		test.push(5);//3rd(3 elements in stack)
+		assertEquals(3,test.size());
+		assertEquals(5,test.peek());//5 at the peek
+		assertEquals(5,test.pop());//5 is removed
+		assertEquals(2,test.size());//size is 2
+		assertFalse(test.isEmpty());//stack is not empty
+		assertEquals(4,test.pop());
+		assertEquals(3,test.pop());
+		assertTrue(test.isEmpty());//stack is empty now.
+		assertThrows(IllegalStateException.class,()->{test.pop();});//as stack is empty it will throw an exception.
+		assertThrows(IllegalStateException.class,()->{test.peek();});//as stack is emptyit will throws an exception.
+		
+		
+	}
+
+}
