@@ -1,0 +1,75 @@
+package eg.edu.alexu.csd.datastructure.stack.cs16;
+
+import java.util.Scanner;
+import java.util.regex.Pattern;
+/**
+ * @author Ahmed Yasser
+ * */
+public class UIStack {
+
+	 public static void main(String[]args) throws Exception {
+		  Stack test = new Stack();
+		  System.out.println("let's start");
+		  Scanner input = new Scanner(System.in);
+		  boolean resume1 = true;
+		  while(resume1) {
+			 print(); 
+			 int choice = input.nextInt();
+			 while(check1(choice)) {
+				 System.out.println("please enter a valid choice : ");
+				 choice = input.nextInt();
+			 }
+			switch(choice) {
+			
+			case 1:
+				System.out.println("please choose the number to be pushed");
+				Object element = input.next();
+				test.push(element);
+				break;
+			case 2:
+				try{Object pop = test.pop();
+				System.out.println("The element poped :"+pop);
+				break;}catch(IllegalStateException e) {
+					System.out.println(e);
+					break;
+				}
+			case 3:
+				try{System.out.println("The element at the peek : "+test.peek());	
+				break;}catch(IllegalStateException e) {
+					System.out.println(e);
+					break;
+				}
+			case 4:
+				System.out.println("the size of the stack is : "+test.size());
+				break;
+			case 5:
+				System.out.println("Is the stack empty ? "+test.isEmpty());
+				break;
+			case 6:
+				resume1 = false;
+				break;
+			}  
+		  }
+		  input.close();
+	  }	
+	  public static  boolean check1 (int x) {
+		  String test = x + "";
+		  if (Pattern.matches("[1-6]",test)) {
+			 return false;
+		  } else {
+			  return true;
+		  }
+		  }
+		  
+	  
+	  public static void print() {
+		  System.out.println("===============");
+		  System.out.println("1 - Push");
+		  System.out.println("2 - Pop");
+		  System.out.println("3 - Peek");
+		  System.out.println("4 - Get size");
+		  System.out.println("5 - Check if Empty ");
+		  System.out.println("6 - Exit");
+		  System.out.print("please choose a number : ");
+	  }	
+}
