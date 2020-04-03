@@ -1,10 +1,9 @@
+
 package eg.edu.alexu.csd.datastructure.stack.cs16;
 
 import java.util.regex.Pattern;
 import java.util.Scanner;
 public class UIapplication {
-
-	
 	public static void main(String[] args) {
 	Scanner input = new Scanner(System.in);
 	ExpressionEvaluator apply=new ExpressionEvaluator(); 
@@ -15,13 +14,14 @@ public class UIapplication {
 		evaluate = true;
 		System.out.println("please enter the infix expression : ");
 		String expression=input.nextLine();
-		try{ expression2=apply.infixToPostfix(expression);}
-		catch(RuntimeException e) {
+		try{ expression2=apply.infixToPostfix(expression);
+			System.out.println("The postfix  " +expression2); 
+			}catch(RuntimeException e) {
 			System.out.println(e);
 			evaluate=false;
 		}
 		if(evaluate) {
-		System.out.println("Do youwant to evaluate it ?(y/n)");
+		System.out.println("Do you want to evaluate it ?(y/n)");
 		 char choose = input.next().charAt(0);
 		    choose = Character.toLowerCase(choose);
 		    while (choose != 'y' && choose != 'n') {
@@ -30,6 +30,7 @@ public class UIapplication {
 		        choose = Character.toLowerCase(choose);
 		    }
 		    if(choose=='y') {
+		    	input.nextLine();
 		    	String[] numeric = expression2.split("\\s");
 				for(int i=0;i<numeric.length;i++) {
 		    		if(Pattern.matches("-?[0-9]+", numeric[i])) {
@@ -45,14 +46,17 @@ public class UIapplication {
 		    			System.out.println("please enter a numeric expression");
 		    			replace=input.nextLine();
 		    		}
-		    		
 		    		expression2=expression2.replace(numeric[i], replace);
 		    		}
-		    	}
+		    	} try {
 		    	int result = apply.evaluate(expression2);
 		    	System.out.println("value of the expression is : " + result);
-		    	
-		    }System.out.println("do you want to convert another string?(y/n)");
+		    	}catch(RuntimeException e) {
+		    		System.out.println(e);
+		    	}
+		    }
+		    }
+		    System.out.println("do you want to convert another string?(y/n)");
 			char choose2 = input.next().charAt(0);
 			choose2= Character.toLowerCase(choose2);
 			while(choose2 != 'y' && choose2 != 'n') {
@@ -63,20 +67,12 @@ public class UIapplication {
 			if(choose2 == 'n') {
 				resume = false;
 			}
-
-			
-			
-		}
-		input.nextLine();
 		
-	}
-	
-	
-	
-	
+		input.nextLine();
+	 }
 	input.close();
 	}
-	}
+}
     
 	
 
