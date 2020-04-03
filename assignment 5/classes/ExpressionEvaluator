@@ -1,6 +1,5 @@
 package eg.edu.alexu.csd.datastructure.stack.cs16;
 
-import java.util.Scanner;
 import java.util.regex.Pattern;
 /**
  * @author Ahmed Yasser
@@ -62,7 +61,6 @@ public class ExpressionEvaluator implements IExpressionEvaluator{
 			for (int i = 0; i < array.length; i++) {
 				expression2 = expression2 + array[i];
 			}
-			System.out.println(expression2);
 			for (int i = 0; i < expression2.length(); i++) {
 				char  input = expression2.charAt(i);
 				if (input == '(') {
@@ -144,7 +142,6 @@ public class ExpressionEvaluator implements IExpressionEvaluator{
 			 * Regex expression used can work with symbolic and numeric expressions.
 			 * it also works if there is other symbols rather than alphabets and numbers.
 			 * */
-			System.out.println(output);
 			int counter1 = 0;
 			int counter2 = 0;
 			for (int i = 0; i < array2.length; i++) {
@@ -158,7 +155,6 @@ public class ExpressionEvaluator implements IExpressionEvaluator{
 					if(counter2!=counter1-1&&counter2!=0) {
 				throw new RuntimeException("number of operators is not acceptable with number of operands ");
 			}
-			System.out.println(output);	
 			return output;
 		}
 			/**
@@ -210,7 +206,6 @@ public class ExpressionEvaluator implements IExpressionEvaluator{
 							break;
 						}
 						String sresult1 = result1 + "";
-						System.out.println(sresult1);
 						stack.push(sresult1);
 					} 
 					else {
