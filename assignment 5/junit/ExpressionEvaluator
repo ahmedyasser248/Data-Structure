@@ -45,10 +45,7 @@ class ExpressionEvaluatorTest {
 	    
 	    //special cases(1 positive term or just one negative term)
 	    assertEquals("123",test.infixToPostfix("123"));
-	    assertEquals("0 123 -",test.infixToPostfix("-123"));
-	    
-	    
-	    
+	    assertEquals("0 123 -",test.infixToPostfix("-123"));   
 	}
 
 }
