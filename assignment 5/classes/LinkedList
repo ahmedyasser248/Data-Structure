@@ -1,7 +1,4 @@
 package eg.edu.alexu.csd.datastructure.stack.cs16;
-
-import eg.edu.alexu.csd.datastructure.stack.cs16.DLinkedList.Node;
-
 public class DLinkedList implements ILinkedList {
 	
 	 public int size;
@@ -112,7 +109,6 @@ public class DLinkedList implements ILinkedList {
 
 	  @Override
 	  public void remove(int index) {
-	    System.out.println(size);
 		  if (index == 0 && size == 1) {
 	    	 head = null;
 	    	 tail = null;
