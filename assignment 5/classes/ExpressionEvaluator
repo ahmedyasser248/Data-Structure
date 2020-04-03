@@ -216,13 +216,5 @@ public class ExpressionEvaluator implements IExpressionEvaluator{
 			
 			return (int) result1;
 	  }
-		public static void main(String[] args) {
-			ExpressionEvaluator mona = new ExpressionEvaluator();
-			String ahmed = "2 + (-3/4)-6";
-			String test = mona.infixToPostfix(ahmed);
-			System.out.println(test);
-			System.out.println(mona.evaluate(test));
-		}
-
-	
+		
 }
