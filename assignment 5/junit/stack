@@ -21,9 +21,7 @@ class JunitForStack {
 		assertEquals(3,test.pop());
 		assertTrue(test.isEmpty());//stack is empty now.
 		assertThrows(IllegalStateException.class,()->{test.pop();});//as stack is empty it will throw an exception.
-		assertThrows(IllegalStateException.class,()->{test.peek();});//as stack is emptyit will throws an exception.
-		
-		
+		assertThrows(IllegalStateException.class,()->{test.peek();});//as stack is emptyit will throws an exception.	
 	}
 
 }
