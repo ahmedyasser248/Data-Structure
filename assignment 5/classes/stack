@@ -78,7 +78,6 @@ public class Stack implements IStack{
 	public int size() {
 		return work.size();
 	}
-
 	/**
 	 * <p>
 	 * It is used to print stack
