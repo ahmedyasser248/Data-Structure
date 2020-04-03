@@ -95,11 +95,5 @@ public class Stack implements IStack{
     		temp = temp.next;
     	}
     }
-    public static void main(String [] args) {
-    	Stack test=new Stack();
-    	test.push(3);
-    	test.push(4);
-    	test.push(5);
-    	test.print(test);  	
-    }
+   
 }
